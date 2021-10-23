@@ -26,54 +26,54 @@
       </table>
     </div>
 
-<!--    <div class="col-md">-->
-<!--      <div class="card" id="cfForm">-->
-<!--        <div class="card-header">-->
-<!--          مشخصات فیلد-->
-<!--        </div>-->
+    <div class="col-md">
+      <div class="card" id="cfForm">
+        <div class="card-header">
+          مشخصات فیلد
+        </div>
 
-<!--        <div class="card-body">-->
-<!--          <div class="form-group">-->
-<!--            <label for="label">برچسب</label>-->
-<!--            <p class="small text-muted">(این نامی است که در صفحه "ویرایش" نمایش داده خواهد شد)</p>-->
-<!--            <input type="text" data-require="1" name="label" id="label" class="form-control">-->
-<!--          </div>-->
+        <div class="card-body">
+          <div class="form-group">
+            <label for="label">برچسب</label>
+            <p class="small text-muted">(این نامی است که در صفحه "ویرایش" نمایش داده خواهد شد)</p>
+            <input type="text" data-require="1" name="label" id="label" class="form-control">
+          </div>
 
-<!--          <div class="form-group">-->
-<!--            <label for="name">نام</label>-->
-<!--            <p class="small text-muted">(تک کلمه، بدون فاصله. خط زیرین و خط تیره ها مجازاند)</p>-->
-<!--            <input type="text" name="name" id="name" class="form-control" data-require="1">-->
-<!--          </div>-->
+          <div class="form-group">
+            <label for="name">نام</label>
+            <p class="small text-muted">(تک کلمه، بدون فاصله. خط زیرین و خط تیره ها مجازاند)</p>
+            <input type="text" name="name" id="name" class="form-control" data-require="1">
+          </div>
 
-<!--          <div class="form-group">-->
-<!--            <label for="type">نوع</label>-->
-<!--            <select name="type" id="type" class="form-control" v-on:change="selectType" data-require="1">-->
-<!--              <option v-for="option in fieldType" :value="option.type">{{ option.label }}</option>-->
-<!--            </select>-->
-<!--          </div>-->
+          <div class="form-group">
+            <label for="type">نوع</label>
+            <select name="type" id="type" class="form-control" v-on:change="selectType" data-require="1">
+              <option v-for="option in fieldType" :value="option.type">{{ option.label }}</option>
+            </select>
+          </div>
 
-<!--          <div class="form-group">-->
-<!--            <label for="hint">دستورالعمل ها</label>-->
-<!--            <p class="small text-muted">دستورالعمل هایی برای نویسندگان. هنگام ارسال داده ها نمایش داده می شوند</p>-->
-<!--            <textarea name="hint" id="hint" class="form-control"></textarea>-->
-<!--          </div>-->
+          <div class="form-group">
+            <label for="hint">دستورالعمل ها</label>
+            <p class="small text-muted">دستورالعمل هایی برای نویسندگان. هنگام ارسال داده ها نمایش داده می شوند</p>
+            <textarea name="hint" id="hint" class="form-control"></textarea>
+          </div>
 
-<!--          <div class="form-group form-check">-->
-<!--            <label class="form-check-label">-->
-<!--              <input class="form-check-input" name="required" type="checkbox"> الزامی-->
-<!--            </label>-->
-<!--          </div>-->
+          <div class="form-group form-check">
+            <label class="form-check-label">
+              <input class="form-check-input" name="required" type="checkbox"> الزامی
+            </label>
+          </div>
 
-<!--          <div :class="Object.keys(selectedType).length<=0 ? 'spinner-grow text-warning' : ''" :style="Object.keys(selectedType).length<=0? 'margin: 0 8rem;' : ''">-->
-<!--            <div v-for="item in selectedType.options" v-html="generateInput(item)"></div>-->
-<!--          </div>-->
+          <div :class="Object.keys(selectedType).length<=0 ? 'spinner-grow text-warning' : ''" :style="Object.keys(selectedType).length<=0? 'margin: 0 8rem;' : ''">
+            <div v-for="item in selectedType.options" v-html="generateInput(item)"></div>
+          </div>
 
-<!--          <button class="btn btn-success" v-on:click="addNewField">{{ submitTitle }}</button>-->
+          <button class="btn btn-success" v-on:click="addNewField">{{ submitTitle }}</button>
 
-<!--        </div>-->
+        </div>
 
-<!--      </div>-->
-<!--    </div>-->
+      </div>
+    </div>
 
   </div>
 </template>
