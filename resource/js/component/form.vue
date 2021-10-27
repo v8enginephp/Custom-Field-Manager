@@ -2,14 +2,14 @@
   <div class="row">
     <div class="col-md-8">
 
-      <table id="rpFields" class="table text-center table-striped table-responsive-md table-hover border">
+      <table id="rpFields" class="text-center table table-striped table-responsive-md table-hover table-borderless">
         <thead>
-        <tr>
-          <th>ترتیب</th>
-          <th>برچسب</th>
-          <th>نام</th>
-          <th>نوع</th>
-          <th>مدیریت</th>
+        <tr role="row">
+          <th class="all sorting">ترتیب</th>
+          <th class="all sorting">برچسب</th>
+          <th class="all sorting">نام</th>
+          <th class="all sorting">نوع</th>
+          <th class="all sorting">مدیریت</th>
         </tr>
         </thead>
         <tbody class="ss">
@@ -24,6 +24,40 @@
         </tr>
         </tbody>
       </table>
+
+      <hr>
+
+      <h5>نمایش این گروه اگر</h5>
+      <div class="form-group row">
+        <div class="col-md">
+          <select name="condition_type" class="form-control" v-on:change="makeCondition">
+            <option value="post">نوع نوشته</option>
+          </select>
+        </div>
+        <div class="col-md">
+
+          <select name="condition" class="form-control" v-on:change="makeCondition">
+            <option value="==">برابر با</option>
+            <option value="!=">مخالق با</option>
+          </select>
+        </div>
+
+        <div class="col-md">
+          <select name="condition_location" id="kind" class="form-control" v-on:change="makeCondition">
+            <option value="">یک گزینه را انتخاب فرمایید.</option>
+          </select>
+        </div>
+
+      </div>
+
+      <form action="" method="post" id="submitCf">
+        <input type="hidden" name="inputs" v-model:value="JSON.stringify(userFields)">
+        <input type="hidden" name="condition" v-model:value="JSON.stringify(conditions)">
+        <button class="btn btn-success px-5 btn">
+          <i class="fa-floppy-o fa"></i>
+          ذخیره
+        </button>
+      </form>
     </div>
 
     <div class="col-md">
@@ -87,14 +121,14 @@ export default {
   },
   data() {
     return {
-      userFields: [
-        {"priority": 1, "label": "Ali", "name": "Ali", "type": "text"},
-        {"priority": 2, "label": "Reza", "name": "Reza", "type": "text"},
-        {"priority": 3, "label": "Alex", "name": "Alex", "type": "text"},
-        {"priority": 4, "label": "Jon", "name": "Jon", "type": "text"}
-      ],
+      priority: 1,
+      userFields: [],
       fieldType: JSON.parse(this.fields),
-      conditions: [],
+      conditions: {
+        type:"post",
+        condition:"==",
+        location:"",
+      },
       selectedType: [],
       submitType: "new",
       submitTitle: 'افزودن فیلد جدید'
@@ -102,6 +136,8 @@ export default {
   },
   watch: {
     fields: function () {
+    },
+    userFields: function () {
     }
   },
   methods: {
@@ -158,7 +194,7 @@ export default {
 
       let i = 1;
       this.userFields.map(x => x.priority = i++);
-
+      this.priority--;
       this.sortFields();
     },
     sortFields() {
@@ -172,6 +208,7 @@ export default {
     canSubmit() {
       let checkInput = true;
       $(".error").remove();
+      $(".border-danger").removeClass('border-danger');
       $("#cfForm").find("[data-require='1']").each(function (i, item) {
         if ($(item).val() === "") {
           checkInput = false;
@@ -182,10 +219,22 @@ export default {
       return checkInput;
     },
     addNewField() {
-      if (this.canSubmit())
+      let input = {};
+      if (this.canSubmit()) {
+        input['priority'] = this.priority++;
         $("#cfForm").find("input, textarea, select").each(function (index, item) {
-          console.log($(item).attr('name'), $(item).val())
+          input[$(item).attr('name')] = $(item).val();
+          $(item).val("");
+          if ($(item).prop("type") === 'checkbox') {
+            input[$(item).attr('name')] = $(item).is(":checked");
+            $(item).prop('checked', false);
+          }
         });
+        this.userFields.push(input);
+      }
+    },
+    makeCondition(element){
+      this.conditions[$(element.target).attr('name')]=$(element.target).val()
     }
   },
   mounted() {

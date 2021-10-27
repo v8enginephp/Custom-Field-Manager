@@ -111,6 +111,40 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     fields: {
@@ -119,36 +153,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   data: function data() {
     return {
-      userFields: [{
-        "priority": 1,
-        "label": "Ali",
-        "name": "Ali",
-        "type": "text"
-      }, {
-        "priority": 2,
-        "label": "Reza",
-        "name": "Reza",
-        "type": "text"
-      }, {
-        "priority": 3,
-        "label": "Alex",
-        "name": "Alex",
-        "type": "text"
-      }, {
-        "priority": 4,
-        "label": "Jon",
-        "name": "Jon",
-        "type": "text"
-      }],
+      priority: 1,
+      userFields: [],
       fieldType: JSON.parse(this.fields),
-      conditions: [],
+      conditions: {
+        type: "post",
+        condition: "==",
+        location: ""
+      },
       selectedType: [],
       submitType: "new",
       submitTitle: 'افزودن فیلد جدید'
     };
   },
   watch: {
-    fields: function fields() {}
+    fields: function fields() {},
+    userFields: function userFields() {}
   },
   methods: {
     generateInput: function generateInput(item) {
@@ -208,6 +228,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.userFields.map(function (x) {
         return x.priority = i++;
       });
+      this.priority--;
       this.sortFields();
     },
     sortFields: function sortFields() {
@@ -221,6 +242,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     canSubmit: function canSubmit() {
       var checkInput = true;
       $(".error").remove();
+      $(".border-danger").removeClass('border-danger');
       $("#cfForm").find("[data-require='1']").each(function (i, item) {
         if ($(item).val() === "") {
           checkInput = false;
@@ -231,9 +253,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return checkInput;
     },
     addNewField: function addNewField() {
-      if (this.canSubmit()) $("#cfForm").find("input, textarea, select").each(function (index, item) {
-        console.log($(item).attr('name'), $(item).val());
-      });
+      var input = {};
+
+      if (this.canSubmit()) {
+        input['priority'] = this.priority++;
+        $("#cfForm").find("input, textarea, select").each(function (index, item) {
+          input[$(item).attr('name')] = $(item).val();
+          $(item).val("");
+
+          if ($(item).prop("type") === 'checkbox') {
+            input[$(item).attr('name')] = $(item).is(":checked");
+            $(item).prop('checked', false);
+          }
+        });
+        this.userFields.push(input);
+      }
+    },
+    makeCondition: function makeCondition(element) {
+      this.conditions[$(element.target).attr('name')] = $(element.target).val();
     }
   },
   mounted: function mounted() {
@@ -14390,7 +14427,7 @@ var render = function() {
         "table",
         {
           staticClass:
-            "table text-center table-striped table-responsive-md table-hover border",
+            "text-center table table-striped table-responsive-md table-hover table-borderless",
           attrs: { id: "rpFields" }
         },
         [
@@ -14428,7 +14465,105 @@ var render = function() {
             0
           )
         ]
-      )
+      ),
+      _vm._v(" "),
+      _c("hr"),
+      _vm._v(" "),
+      _c("h5", [_vm._v("نمایش این گروه اگر")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group row" }, [
+        _c("div", { staticClass: "col-md" }, [
+          _c(
+            "select",
+            {
+              staticClass: "form-control",
+              attrs: { name: "condition_type" },
+              on: { change: _vm.makeCondition }
+            },
+            [_c("option", { attrs: { value: "post" } }, [_vm._v("نوع نوشته")])]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md" }, [
+          _c(
+            "select",
+            {
+              staticClass: "form-control",
+              attrs: { name: "condition" },
+              on: { change: _vm.makeCondition }
+            },
+            [
+              _c("option", { attrs: { value: "==" } }, [_vm._v("برابر با")]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "!=" } }, [_vm._v("مخالق با")])
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md" }, [
+          _c(
+            "select",
+            {
+              staticClass: "form-control",
+              attrs: { name: "condition_location", id: "kind" },
+              on: { change: _vm.makeCondition }
+            },
+            [
+              _c("option", { attrs: { value: "" } }, [
+                _vm._v("یک گزینه را انتخاب فرمایید.")
+              ])
+            ]
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c("form", { attrs: { action: "", method: "post", id: "submitCf" } }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model:value",
+              value: JSON.stringify(_vm.userFields),
+              expression: "JSON.stringify(userFields)",
+              arg: "value"
+            }
+          ],
+          attrs: { type: "hidden", name: "inputs" },
+          domProps: { value: JSON.stringify(_vm.userFields) },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(JSON, "stringify(userFields)", $event.target.value)
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model:value",
+              value: JSON.stringify(_vm.conditions),
+              expression: "JSON.stringify(conditions)",
+              arg: "value"
+            }
+          ],
+          attrs: { type: "hidden", name: "condition" },
+          domProps: { value: JSON.stringify(_vm.conditions) },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(JSON, "stringify(conditions)", $event.target.value)
+            }
+          }
+        }),
+        _vm._v(" "),
+        _vm._m(1)
+      ])
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "col-md" }, [
@@ -14438,9 +14573,9 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "card-body" }, [
-          _vm._m(1),
-          _vm._v(" "),
           _vm._m(2),
+          _vm._v(" "),
+          _vm._m(3),
           _vm._v(" "),
           _c("div", { staticClass: "form-group" }, [
             _c("label", { attrs: { for: "type" } }, [_vm._v("نوع")]),
@@ -14461,9 +14596,9 @@ var render = function() {
             )
           ]),
           _vm._v(" "),
-          _vm._m(3),
-          _vm._v(" "),
           _vm._m(4),
+          _vm._v(" "),
+          _vm._m(5),
           _vm._v(" "),
           _c(
             "div",
@@ -14501,17 +14636,26 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("thead", [
-      _c("tr", [
-        _c("th", [_vm._v("ترتیب")]),
+      _c("tr", { attrs: { role: "row" } }, [
+        _c("th", { staticClass: "all sorting" }, [_vm._v("ترتیب")]),
         _vm._v(" "),
-        _c("th", [_vm._v("برچسب")]),
+        _c("th", { staticClass: "all sorting" }, [_vm._v("برچسب")]),
         _vm._v(" "),
-        _c("th", [_vm._v("نام")]),
+        _c("th", { staticClass: "all sorting" }, [_vm._v("نام")]),
         _vm._v(" "),
-        _c("th", [_vm._v("نوع")]),
+        _c("th", { staticClass: "all sorting" }, [_vm._v("نوع")]),
         _vm._v(" "),
-        _c("th", [_vm._v("مدیریت")])
+        _c("th", { staticClass: "all sorting" }, [_vm._v("مدیریت")])
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("button", { staticClass: "btn btn-success px-5 btn" }, [
+      _c("i", { staticClass: "fa-floppy-o fa" }),
+      _vm._v("\n        ذخیره\n      ")
     ])
   },
   function() {
