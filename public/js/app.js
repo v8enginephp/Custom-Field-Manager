@@ -149,18 +149,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   props: {
     fields: {
       "default": ""
+    },
+    action: {
+      required: true
+    },
+    user_fields: {
+      required: false,
+      "default": "[]"
+    },
+    user_condition: {
+      required: false,
+      "default": '[{type: "post", condition: "==", location: "",}]'
     }
   },
   data: function data() {
     return {
       priority: 1,
-      userFields: [],
+      userFields: JSON.parse(this.user_fields),
       fieldType: JSON.parse(this.fields),
-      conditions: [{
-        type: "post",
-        condition: "==",
-        location: ""
-      }],
+      conditions: JSON.parse(this.user_condition),
       selectedType: [],
       submitType: "new",
       submitTitle: 'افزودن فیلد جدید'
@@ -268,9 +275,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         });
         this.userFields.push(input);
       }
-    },
-    makeCondition: function makeCondition(element) {
-      this.conditions[0][$(element.target).attr('name')] = $(element.target).val();
     }
   },
   mounted: function mounted() {
@@ -14476,9 +14480,34 @@ var render = function() {
           _c(
             "select",
             {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model:value",
+                  value: _vm.conditions[0]["type"],
+                  expression: "conditions[0]['type']",
+                  arg: "value"
+                }
+              ],
               staticClass: "form-control",
               attrs: { name: "condition_type" },
-              on: { change: _vm.makeCondition }
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.$set(
+                    _vm.conditions[0],
+                    "type",
+                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                  )
+                }
+              }
             },
             [_c("option", { attrs: { value: "post" } }, [_vm._v("نوع نوشته")])]
           )
@@ -14488,14 +14517,39 @@ var render = function() {
           _c(
             "select",
             {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model:value",
+                  value: _vm.conditions[0]["condition"],
+                  expression: "conditions[0]['condition']",
+                  arg: "value"
+                }
+              ],
               staticClass: "form-control",
               attrs: { name: "condition" },
-              on: { change: _vm.makeCondition }
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.$set(
+                    _vm.conditions[0],
+                    "condition",
+                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                  )
+                }
+              }
             },
             [
               _c("option", { attrs: { value: "==" } }, [_vm._v("برابر با")]),
               _vm._v(" "),
-              _c("option", { attrs: { value: "!=" } }, [_vm._v("مخالق با")])
+              _c("option", { attrs: { value: "!=" } }, [_vm._v("مخالف با")])
             ]
           )
         ]),
@@ -14504,9 +14558,34 @@ var render = function() {
           _c(
             "select",
             {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model:value",
+                  value: _vm.conditions[0]["location"],
+                  expression: "conditions[0]['location']",
+                  arg: "value"
+                }
+              ],
               staticClass: "form-control",
               attrs: { name: "condition_location", id: "kind" },
-              on: { change: _vm.makeCondition }
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.$set(
+                    _vm.conditions[0],
+                    "location",
+                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                  )
+                }
+              }
             },
             [
               _c("option", { attrs: { value: "" } }, [

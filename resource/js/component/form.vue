@@ -30,20 +30,20 @@
       <h5>نمایش این گروه اگر</h5>
       <div class="form-group row">
         <div class="col-md">
-          <select name="condition_type" class="form-control" v-on:change="makeCondition">
+          <select name="condition_type" class="form-control" v-model:value="conditions[0]['type']">
             <option value="post">نوع نوشته</option>
           </select>
         </div>
         <div class="col-md">
 
-          <select name="condition" class="form-control" v-on:change="makeCondition">
+          <select name="condition" class="form-control" v-model:value="conditions[0]['condition']">
             <option value="==">برابر با</option>
-            <option value="!=">مخالق با</option>
+            <option value="!=">مخالف با</option>
           </select>
         </div>
 
         <div class="col-md">
-          <select name="condition_location" id="kind" class="form-control" v-on:change="makeCondition">
+          <select name="condition_location" id="kind" class="form-control" v-model:value="conditions[0]['location']">
             <option value="">یک گزینه را انتخاب فرمایید.</option>
           </select>
         </div>
@@ -117,18 +117,25 @@ export default {
   props: {
     fields: {
       default: "",
+    },
+    action:{
+      required:true
+    },
+    user_fields:{
+      required: false,
+      default: "[]"
+    },
+    user_condition:{
+      required:false,
+      default:'[{type: "post", condition: "==", location: "",}]'
     }
   },
   data() {
     return {
       priority: 1,
-      userFields: [],
+      userFields: JSON.parse(this.user_fields),
       fieldType: JSON.parse(this.fields),
-      conditions: [{
-        type: "post",
-        condition: "==",
-        location: "",
-      }],
+      conditions: JSON.parse(this.user_condition),
       selectedType: [],
       submitType: "new",
       submitTitle: 'افزودن فیلد جدید'
@@ -233,9 +240,6 @@ export default {
         this.userFields.push(input);
       }
     },
-    makeCondition(element){
-      this.conditions[0][$(element.target).attr('name')]=$(element.target).val()
-    }
   },
   mounted() {
     const vm = this;
