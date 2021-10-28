@@ -50,10 +50,10 @@
 
       </div>
 
-      <form action="" method="post" id="submitCf">
+      <form :action="action" method="post" id="submitCf">
         <input type="hidden" name="inputs" v-model:value="JSON.stringify(userFields)">
         <input type="hidden" name="condition" v-model:value="JSON.stringify(conditions)">
-        <button class="btn btn-success px-5 btn">
+        <button type="button" class="btn btn-success px-5 btn">
           <i class="fa-floppy-o fa"></i>
           ذخیره
         </button>

@@ -14596,53 +14596,57 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _c("form", { attrs: { action: "", method: "post", id: "submitCf" } }, [
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model:value",
-              value: JSON.stringify(_vm.userFields),
-              expression: "JSON.stringify(userFields)",
-              arg: "value"
-            }
-          ],
-          attrs: { type: "hidden", name: "inputs" },
-          domProps: { value: JSON.stringify(_vm.userFields) },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+      _c(
+        "form",
+        { attrs: { action: _vm.action, method: "post", id: "submitCf" } },
+        [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model:value",
+                value: JSON.stringify(_vm.userFields),
+                expression: "JSON.stringify(userFields)",
+                arg: "value"
               }
-              _vm.$set(JSON, "stringify(userFields)", $event.target.value)
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model:value",
-              value: JSON.stringify(_vm.conditions),
-              expression: "JSON.stringify(conditions)",
-              arg: "value"
-            }
-          ],
-          attrs: { type: "hidden", name: "condition" },
-          domProps: { value: JSON.stringify(_vm.conditions) },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+            ],
+            attrs: { type: "hidden", name: "inputs" },
+            domProps: { value: JSON.stringify(_vm.userFields) },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(JSON, "stringify(userFields)", $event.target.value)
               }
-              _vm.$set(JSON, "stringify(conditions)", $event.target.value)
             }
-          }
-        }),
-        _vm._v(" "),
-        _vm._m(1)
-      ])
+          }),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model:value",
+                value: JSON.stringify(_vm.conditions),
+                expression: "JSON.stringify(conditions)",
+                arg: "value"
+              }
+            ],
+            attrs: { type: "hidden", name: "condition" },
+            domProps: { value: JSON.stringify(_vm.conditions) },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(JSON, "stringify(conditions)", $event.target.value)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _vm._m(1)
+        ]
+      )
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "col-md" }, [
@@ -14732,10 +14736,14 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("button", { staticClass: "btn btn-success px-5 btn" }, [
-      _c("i", { staticClass: "fa-floppy-o fa" }),
-      _vm._v("\n        ذخیره\n      ")
-    ])
+    return _c(
+      "button",
+      { staticClass: "btn btn-success px-5 btn", attrs: { type: "button" } },
+      [
+        _c("i", { staticClass: "fa-floppy-o fa" }),
+        _vm._v("\n        ذخیره\n      ")
+      ]
+    )
   },
   function() {
     var _vm = this
