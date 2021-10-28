@@ -156,11 +156,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       priority: 1,
       userFields: [],
       fieldType: JSON.parse(this.fields),
-      conditions: {
+      conditions: [{
         type: "post",
         condition: "==",
         location: ""
-      },
+      }],
       selectedType: [],
       submitType: "new",
       submitTitle: 'افزودن فیلد جدید'
@@ -270,7 +270,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
     },
     makeCondition: function makeCondition(element) {
-      this.conditions[$(element.target).attr('name')] = $(element.target).val();
+      this.conditions[0][$(element.target).attr('name')] = $(element.target).val();
     }
   },
   mounted: function mounted() {

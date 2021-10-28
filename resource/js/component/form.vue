@@ -124,11 +124,11 @@ export default {
       priority: 1,
       userFields: [],
       fieldType: JSON.parse(this.fields),
-      conditions: {
-        type:"post",
-        condition:"==",
-        location:"",
-      },
+      conditions: [{
+        type: "post",
+        condition: "==",
+        location: "",
+      }],
       selectedType: [],
       submitType: "new",
       submitTitle: 'افزودن فیلد جدید'
@@ -234,7 +234,7 @@ export default {
       }
     },
     makeCondition(element){
-      this.conditions[$(element.target).attr('name')]=$(element.target).val()
+      this.conditions[0][$(element.target).attr('name')]=$(element.target).val()
     }
   },
   mounted() {
