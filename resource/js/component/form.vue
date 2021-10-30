@@ -1,64 +1,75 @@
 <template>
-  <div class="row">
+  <div class="row p-3 rounded" :style="'background:'+bg">
     <div class="col-md-8">
 
-      <table id="rpFields" class="text-center table table-striped table-responsive-md table-hover table-borderless">
-        <thead>
-        <tr role="row">
-          <th class="all sorting">ترتیب</th>
-          <th class="all sorting">برچسب</th>
-          <th class="all sorting">نام</th>
-          <th class="all sorting">نوع</th>
-          <th class="all sorting">مدیریت</th>
-        </tr>
-        </thead>
-        <tbody class="ss">
-        <tr v-for="field in userFields" :data-priority="field.priority">
-          <td>{{ field.priority }}</td>
-          <td>{{ field.label }}</td>
-          <td>{{ field.name }}</td>
-          <td>{{ field.type }}</td>
-          <td>
-            <button class="btn btn-danger" v-on:click="removeField(field)">حذف فیلد</button>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+      <div class="card">
+        <div class="card-header">
+          ضمینه های سفارشی
+        </div>
+        <div class="card-body">
+          <table id="rpFields" class="text-center table table-striped table-responsive-md table-hover table-borderless">
+            <thead>
+            <tr role="row">
+              <th class="all text-center sorting">ترتیب</th>
+              <th class="all text-center sorting">برچسب</th>
+              <th class="all text-center sorting">نام</th>
+              <th class="all text-center sorting">نوع</th>
+              <th class="all text-center sorting">مدیریت</th>
+            </tr>
+            </thead>
+            <tbody class="ss">
+            <tr v-for="field in userFields" :data-priority="field.priority">
+              <td>{{ field.priority }}</td>
+              <td>{{ field.label }}</td>
+              <td>{{ field.name }}</td>
+              <td>{{ field.type }}</td>
+              <td>
+                <button class="btn btn-danger" v-on:click="removeField(field)">حذف فیلد</button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
 
       <hr>
 
-      <h5>نمایش این گروه اگر</h5>
-      <div class="form-group row">
-        <div class="col-md">
-          <select name="condition_type" class="form-control" v-model:value="conditions[0]['type']">
-            <option value="post">نوع نوشته</option>
-          </select>
-        </div>
-        <div class="col-md">
+      <div class="card">
+        <div class="card-header">نمایش این گروه اگر</div>
+        <div class="card-body">
+          <div class="form-group row">
+            <div class="col-md">
+              <select class="form-control" v-model:value="conditions[0]['type']">
+                <option value="post">نوع نوشته</option>
+              </select>
+            </div>
+            <div class="col-md">
 
-          <select name="condition" class="form-control" v-model:value="conditions[0]['condition']">
-            <option value="==">برابر با</option>
-            <option value="!=">مخالف با</option>
-          </select>
-        </div>
+              <select class="form-control" v-model:value="conditions[0]['condition']">
+                <option value="==">برابر با</option>
+                <option value="!=">مخالف با</option>
+              </select>
+            </div>
 
-        <div class="col-md">
-          <select name="condition_location" id="kind" class="form-control" v-model:value="conditions[0]['location']">
-            <option value="">یک گزینه را انتخاب فرمایید.</option>
-            <option v-for="item in filed_condition" :value="item.key">{{item.value}}</option>
-          </select>
-        </div>
+            <div class="col-md">
+              <select name="condition_location" id="kind" class="form-control" v-model:value="conditions[0]['location']">
+                <option value="">یک گزینه را انتخاب فرمایید.</option>
+                <option v-for="item in filed_condition" :value="item.key">{{ item.value }}</option>
+              </select>
+            </div>
+          </div>
 
+          <form :action="action" method="post" id="submitCf">
+            <input type="hidden" name="inputs" v-model:value="JSON.stringify(userFields)">
+            <input type="hidden" name="condition" v-model:value="JSON.stringify(conditions)">
+            <button type="button" class="btn btn-success px-5 btn" id="submitBtn">
+              <i class="fa-floppy-o fa"></i>
+              ذخیره
+            </button>
+          </form>
+
+        </div>
       </div>
-
-      <form :action="action" method="post" id="submitCf">
-        <input type="hidden" name="inputs" v-model:value="JSON.stringify(userFields)">
-        <input type="hidden" name="condition" v-model:value="JSON.stringify(conditions)">
-        <button type="button" class="btn btn-success px-5 btn">
-          <i class="fa-floppy-o fa"></i>
-          ذخیره
-        </button>
-      </form>
     </div>
 
     <div class="col-md">
@@ -71,18 +82,18 @@
           <div class="form-group">
             <label for="label">برچسب</label>
             <p class="small text-muted">(این نامی است که در صفحه "ویرایش" نمایش داده خواهد شد)</p>
-            <input type="text" data-require="1" name="label" id="label" class="form-control">
+            <input type="text" data-require="1" id="label" class="form-control">
           </div>
 
           <div class="form-group">
             <label for="name">نام</label>
             <p class="small text-muted">(تک کلمه، بدون فاصله. خط زیرین و خط تیره ها مجازاند)</p>
-            <input type="text" name="name" id="name" class="form-control" data-require="1">
+            <input type="text" id="name" class="form-control" data-require="1">
           </div>
 
           <div class="form-group">
             <label for="type">نوع</label>
-            <select name="type" id="type" class="form-control" v-on:change="selectType" data-require="1">
+            <select id="type" class="form-control" v-on:change="selectType" data-require="1">
               <option v-for="option in fieldType" :value="option.type">{{ option.label }}</option>
             </select>
           </div>
@@ -90,12 +101,12 @@
           <div class="form-group">
             <label for="hint">دستورالعمل ها</label>
             <p class="small text-muted">دستورالعمل هایی برای نویسندگان. هنگام ارسال داده ها نمایش داده می شوند</p>
-            <textarea name="hint" id="hint" class="form-control"></textarea>
+            <textarea id="hint" class="form-control"></textarea>
           </div>
 
           <div class="form-group form-check">
             <label class="form-check-label">
-              <input class="form-check-input" name="required" type="checkbox"> الزامی
+              <input class="form-check-input" id="required" type="checkbox"> الزامی
             </label>
           </div>
 
@@ -103,7 +114,7 @@
             <div v-for="item in selectedType.options" v-html="generateInput(item)"></div>
           </div>
 
-          <button class="btn btn-success" v-on:click="addNewField">{{ submitTitle }}</button>
+          <button type="button" class="btn btn-success" v-on:click="addNewField">{{ submitTitle }}</button>
 
         </div>
 
@@ -116,22 +127,25 @@
 <script>
 export default {
   props: {
+    bg: {
+      required: false
+    },
     fields: {
       default: "",
     },
-    action:{
-      required:true
+    action: {
+      required: true
     },
-    location:{
+    location: {
       required: true,
     },
-    user_fields:{
+    user_fields: {
       required: false,
       default: '[]'
     },
-    user_condition:{
-      required:false,
-      default:'[{"type": "post", "condition": "==", "location": ""}]'
+    user_condition: {
+      required: false,
+      default: '[{"type": "post", "condition": "==", "location": ""}]'
     }
   },
   data() {
@@ -162,7 +176,7 @@ export default {
           <div class="form-group">
             <label for="${item.name}">${item.label}</label>
             <p class="small text-muted" style="white-space: break-spaces">${item.hint}</p>
-            <textarea type="${item.type}" name="${item.name}" id="${item.name}" ${item.require === true ? "data-require='1'" : ""} class="form-control ${item.class ? item.class : ""}"></textarea>
+            <textarea type="${item.type}" id="${item.name}" ${item.require === true ? "data-require='1'" : ""} class="form-control ${item.class ? item.class : ""}"></textarea>
           </div>
           `;
           break;
@@ -171,7 +185,7 @@ export default {
             <div class="form-group form-check">
               <label class="form-check-label">
               <p class="small text-muted" style="white-space: break-spaces">${item.hint}</p>
-              <input class="form-check-input ${item.class ? item.class : ""}" ${item.require === true ? "data-require='1'" : ""} name="${item.name}" type="checkbox"> ${item.label}
+              <input class="form-check-input ${item.class ? item.class : ""}" ${item.require === true ? "data-require='1'" : ""} type="checkbox"> ${item.label}
               </label>
             </div>
             `;
@@ -181,7 +195,7 @@ export default {
           <div class="form-group">
             <label for="${item.name}">${item.label}</label>
             <p class="small text-muted" style="white-space: break-spaces">${item.hint}</p>
-            <input type="${item.type}" name="${item.name}" id="${item.name}" ${item.require === true ? "data-require='1'" : ""} class="form-control ${item.class ? item.class : ""}">
+            <input type="${item.type}" id="${item.name}" ${item.require === true ? "data-require='1'" : ""} class="form-control ${item.class ? item.class : ""}">
           </div>
           `;
           break;
@@ -235,10 +249,13 @@ export default {
       if (this.canSubmit()) {
         input['priority'] = this.priority++;
         $("#cfForm").find("input, textarea, select").each(function (index, item) {
-          input[$(item).attr('name')] = $(item).val();
-          $(item).val("");
+          input[$(item).attr('id')] = $(item).val();
+
+          if ($(item).attr('id') !== 'type')
+            $(item).val("");
+
           if ($(item).prop("type") === 'checkbox') {
-            input[$(item).attr('name')] = $(item).is(":checked");
+            input[$(item).attr('id')] = $(item).is(":checked");
             $(item).prop('checked', false);
           }
         });
