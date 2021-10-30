@@ -45,6 +45,7 @@
         <div class="col-md">
           <select name="condition_location" id="kind" class="form-control" v-model:value="conditions[0]['location']">
             <option value="">یک گزینه را انتخاب فرمایید.</option>
+            <option v-for="item in filed_condition" :value="item.key">{{item.value}}</option>
           </select>
         </div>
 
@@ -121,13 +122,16 @@ export default {
     action:{
       required:true
     },
+    location:{
+      required: true,
+    },
     user_fields:{
       required: false,
-      default: "[]"
+      default: '[]'
     },
     user_condition:{
       required:false,
-      default:'[{type: "post", condition: "==", location: "",}]'
+      default:'[{"type": "post", "condition": "==", "location": ""}]'
     }
   },
   data() {
@@ -136,9 +140,10 @@ export default {
       userFields: JSON.parse(this.user_fields),
       fieldType: JSON.parse(this.fields),
       conditions: JSON.parse(this.user_condition),
+      filed_condition: JSON.parse(this.location),
       selectedType: [],
       submitType: "new",
-      submitTitle: 'افزودن فیلد جدید'
+      submitTitle: 'افزودن فیلد جدید',
     };
   },
   watch: {
