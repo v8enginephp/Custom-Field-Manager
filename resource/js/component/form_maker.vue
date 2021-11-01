@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="col-md-12 fields">
     <div v-for="item of inputs" v-html="generateInput(item)" class="col-md"></div>
   </div>
 </template>
@@ -24,9 +24,9 @@ export default {
         case "select":
           output = `
             <div class="form-group">
-                <label for="${item.name}">${item.label}</label>
+                <label for="${item.alias}">${item.label}</label>
                 <p class="small text-muted" style="white-space: break-spaces">${item.hint}</p>
-                <select class="form-control" name="${item.name}" id="${item.name}" ${item.require === true ? "data-require='1'" : ""}>`;
+                <select class="form-control" name="${item.alias}" id="${item.alias}" ${item.required === true ? "data-require='1'" : ""}>`;
 
           output+=`<option value="">یک گزینه انتخاب فرمایید.</option>`
           for(const option of item.options.split('\n')){
@@ -38,15 +38,15 @@ export default {
         case "textarea":
           output = `
           <div class="form-group">
-            <label for="${item.name}">${item.label}</label>
+            <label for="${item.alias}">${item.label}</label>
             <p class="small text-muted" style="white-space: break-spaces">${item.hint}</p>
             <textarea
               placeholder="${item.placeholder}"
               rows="${item.row}"
               type="${item.type}"
-              id="${item.name}"
-              name="${item.name}"
-              ${item.require === true ? "data-require='1'" : ""}
+              id="${item.alias}"
+              name="${item.alias}"
+              ${item.required === true ? "data-require='1'" : ""}
               class="form-control ${item.class ? item.class : ""}">${item.value}</textarea>
           </div>
           `;
@@ -57,10 +57,10 @@ export default {
               <label class="form-check-label">
               <p class="small text-muted" style="white-space: break-spaces">${item.hint}</p>
               <input
-                name="${item.name}"
-                id="${item.name}"
+                name="${item.alias}"
+                id="${item.alias}"
                 class="form-check-input ${item.class ? item.class : ""}"
-                ${item.require === true ? "data-require='1'" : ""}
+                ${item.required === true ? "data-require='1'" : ""}
                 type="checkbox"> ${item.label}</label>
             </div>
             `;
@@ -68,7 +68,7 @@ export default {
         case "number":
           output = `
           <div class="form-group">
-            <label for="${item.name}">${item.label}</label>
+            <label for="${item.alias}">${item.label}</label>
             <p class="small text-muted" style="white-space: break-spaces">${item.hint}</p>
             <input
               placeholder="${item.placeholder}"
@@ -77,8 +77,8 @@ export default {
               min="${item.min}"
               step="${item.step}"
               type="${item.type}"
-              id="${item.name}"
-              name="${item.name}" ${item.require === true ? "data-require='1'" : ""}
+              id="${item.alias}"
+              name="${item.alias}" ${item.required === true ? "data-require='1'" : ""}
               class="form-control ${item.class ? item.class : ""}">
           </div>
           `;
@@ -86,15 +86,15 @@ export default {
         default:
           output = `
           <div class="form-group">
-            <label for="${item.name}">${item.label}</label>
+            <label for="${item.alias}">${item.label}</label>
             <p class="small text-muted" style="white-space: break-spaces">${item.hint}</p>
             <input
               placeholder="${item.placeholder}"
               value="${item.value}"
               maxlength="${item.maxlength}"
               type="${item.type}"
-              id="${item.name}"
-              name="${item.name}" ${item.require === true ? "data-require='1'" : ""}
+              id="${item.alias}"
+              name="${item.alias}" ${item.required === true ? "data-require='1'" : ""}
               class="form-control ${item.class ? item.class : ""}">
           </div>
           `;

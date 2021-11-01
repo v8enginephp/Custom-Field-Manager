@@ -182,14 +182,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   data: function data() {
     return {
-      priority: 1,
+      priority: JSON.parse(this.user_fields).length + 1,
       userFields: JSON.parse(this.user_fields),
       fieldType: JSON.parse(this.fields),
       conditions: JSON.parse(this.user_condition),
       filed_condition: JSON.parse(this.location),
       selectedType: [],
       submitType: "new",
-      submitTitle: 'افزودن فیلد جدید'
+      submitTitle: 'افزودن فیلد جدید',
+      alias: ""
     };
   },
   watch: {
@@ -293,11 +294,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         });
         this.userFields.push(input);
+        this.randomString();
       }
+    },
+    randomString: function randomString() {
+      var charSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      var randomString = '';
+
+      for (var i = 0; i < 10; i++) {
+        var randomPoz = Math.floor(Math.random() * charSet.length);
+        randomString += charSet.substring(randomPoz, randomPoz + 1);
+      }
+
+      console.log(randomString);
+      this.alias = "acf_" + randomString;
     }
   },
   mounted: function mounted() {
     var vm = this;
+    vm.randomString();
     vm.sortFields();
     $('tbody').sortable({
       update: function update() {
@@ -355,7 +370,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       switch (item.type) {
         case "select":
-          output = "\n            <div class=\"form-group\">\n                <label for=\"".concat(item.name, "\">").concat(item.label, "</label>\n                <p class=\"small text-muted\" style=\"white-space: break-spaces\">").concat(item.hint, "</p>\n                <select class=\"form-control\" name=\"").concat(item.name, "\" id=\"").concat(item.name, "\" ").concat(item.require === true ? "data-require='1'" : "", ">");
+          output = "\n            <div class=\"form-group\">\n                <label for=\"".concat(item.alias, "\">").concat(item.label, "</label>\n                <p class=\"small text-muted\" style=\"white-space: break-spaces\">").concat(item.hint, "</p>\n                <select class=\"form-control\" name=\"").concat(item.alias, "\" id=\"").concat(item.alias, "\" ").concat(item.required === true ? "data-require='1'" : "", ">");
           output += "<option value=\"\">\u06CC\u06A9 \u06AF\u0632\u06CC\u0646\u0647 \u0627\u0646\u062A\u062E\u0627\u0628 \u0641\u0631\u0645\u0627\u06CC\u06CC\u062F.</option>";
 
           var _iterator = _createForOfIteratorHelper(item.options.split('\n')),
@@ -376,19 +391,19 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           break;
 
         case "textarea":
-          output = "\n          <div class=\"form-group\">\n            <label for=\"".concat(item.name, "\">").concat(item.label, "</label>\n            <p class=\"small text-muted\" style=\"white-space: break-spaces\">").concat(item.hint, "</p>\n            <textarea\n              placeholder=\"").concat(item.placeholder, "\"\n              rows=\"").concat(item.row, "\"\n              type=\"").concat(item.type, "\"\n              id=\"").concat(item.name, "\"\n              name=\"").concat(item.name, "\"\n              ").concat(item.require === true ? "data-require='1'" : "", "\n              class=\"form-control ").concat(item["class"] ? item["class"] : "", "\">").concat(item.value, "</textarea>\n          </div>\n          ");
+          output = "\n          <div class=\"form-group\">\n            <label for=\"".concat(item.alias, "\">").concat(item.label, "</label>\n            <p class=\"small text-muted\" style=\"white-space: break-spaces\">").concat(item.hint, "</p>\n            <textarea\n              placeholder=\"").concat(item.placeholder, "\"\n              rows=\"").concat(item.row, "\"\n              type=\"").concat(item.type, "\"\n              id=\"").concat(item.alias, "\"\n              name=\"").concat(item.alias, "\"\n              ").concat(item.required === true ? "data-require='1'" : "", "\n              class=\"form-control ").concat(item["class"] ? item["class"] : "", "\">").concat(item.value, "</textarea>\n          </div>\n          ");
           break;
 
         case "checkbox":
-          output = "\n            <div class=\"form-group form-check\">\n              <label class=\"form-check-label\">\n              <p class=\"small text-muted\" style=\"white-space: break-spaces\">".concat(item.hint, "</p>\n              <input\n                name=\"").concat(item.name, "\"\n                id=\"").concat(item.name, "\"\n                class=\"form-check-input ").concat(item["class"] ? item["class"] : "", "\"\n                ").concat(item.require === true ? "data-require='1'" : "", "\n                type=\"checkbox\"> ").concat(item.label, "</label>\n            </div>\n            ");
+          output = "\n            <div class=\"form-group form-check\">\n              <label class=\"form-check-label\">\n              <p class=\"small text-muted\" style=\"white-space: break-spaces\">".concat(item.hint, "</p>\n              <input\n                name=\"").concat(item.alias, "\"\n                id=\"").concat(item.alias, "\"\n                class=\"form-check-input ").concat(item["class"] ? item["class"] : "", "\"\n                ").concat(item.required === true ? "data-require='1'" : "", "\n                type=\"checkbox\"> ").concat(item.label, "</label>\n            </div>\n            ");
           break;
 
         case "number":
-          output = "\n          <div class=\"form-group\">\n            <label for=\"".concat(item.name, "\">").concat(item.label, "</label>\n            <p class=\"small text-muted\" style=\"white-space: break-spaces\">").concat(item.hint, "</p>\n            <input\n              placeholder=\"").concat(item.placeholder, "\"\n              value=\"").concat(item.value, "\"\n              max=\"").concat(item.max, "\"\n              min=\"").concat(item.min, "\"\n              step=\"").concat(item.step, "\"\n              type=\"").concat(item.type, "\"\n              id=\"").concat(item.name, "\"\n              name=\"").concat(item.name, "\" ").concat(item.require === true ? "data-require='1'" : "", "\n              class=\"form-control ").concat(item["class"] ? item["class"] : "", "\">\n          </div>\n          ");
+          output = "\n          <div class=\"form-group\">\n            <label for=\"".concat(item.alias, "\">").concat(item.label, "</label>\n            <p class=\"small text-muted\" style=\"white-space: break-spaces\">").concat(item.hint, "</p>\n            <input\n              placeholder=\"").concat(item.placeholder, "\"\n              value=\"").concat(item.value, "\"\n              max=\"").concat(item.max, "\"\n              min=\"").concat(item.min, "\"\n              step=\"").concat(item.step, "\"\n              type=\"").concat(item.type, "\"\n              id=\"").concat(item.alias, "\"\n              name=\"").concat(item.alias, "\" ").concat(item.required === true ? "data-require='1'" : "", "\n              class=\"form-control ").concat(item["class"] ? item["class"] : "", "\">\n          </div>\n          ");
           break;
 
         default:
-          output = "\n          <div class=\"form-group\">\n            <label for=\"".concat(item.name, "\">").concat(item.label, "</label>\n            <p class=\"small text-muted\" style=\"white-space: break-spaces\">").concat(item.hint, "</p>\n            <input\n              placeholder=\"").concat(item.placeholder, "\"\n              value=\"").concat(item.value, "\"\n              maxlength=\"").concat(item.maxlength, "\"\n              type=\"").concat(item.type, "\"\n              id=\"").concat(item.name, "\"\n              name=\"").concat(item.name, "\" ").concat(item.require === true ? "data-require='1'" : "", "\n              class=\"form-control ").concat(item["class"] ? item["class"] : "", "\">\n          </div>\n          ");
+          output = "\n          <div class=\"form-group\">\n            <label for=\"".concat(item.alias, "\">").concat(item.label, "</label>\n            <p class=\"small text-muted\" style=\"white-space: break-spaces\">").concat(item.hint, "</p>\n            <input\n              placeholder=\"").concat(item.placeholder, "\"\n              value=\"").concat(item.value, "\"\n              maxlength=\"").concat(item.maxlength, "\"\n              type=\"").concat(item.type, "\"\n              id=\"").concat(item.alias, "\"\n              name=\"").concat(item.alias, "\" ").concat(item.required === true ? "data-require='1'" : "", "\n              class=\"form-control ").concat(item["class"] ? item["class"] : "", "\">\n          </div>\n          ");
           break;
       }
 
@@ -14880,6 +14895,11 @@ var render = function() {
             _vm._v("\n        مشخصات فیلد\n      ")
           ]),
           _vm._v(" "),
+          _c("input", {
+            attrs: { type: "hidden", name: "alias", id: "alias" },
+            domProps: { value: _vm.alias }
+          }),
+          _vm._v(" "),
           _c("div", { staticClass: "card-body" }, [
             _vm._m(2),
             _vm._v(" "),
@@ -15067,6 +15087,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
+    { staticClass: "col-md-12 fields" },
     _vm._l(_vm.inputs, function(item) {
       return _c("div", {
         staticClass: "col-md",

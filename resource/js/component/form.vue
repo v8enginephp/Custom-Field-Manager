@@ -77,7 +77,7 @@
         <div class="card-header">
           مشخصات فیلد
         </div>
-
+        <input type="hidden" name="alias" id="alias" v-bind:value="alias">
         <div class="card-body">
           <div class="form-group">
             <label for="label">برچسب</label>
@@ -150,7 +150,7 @@ export default {
   },
   data() {
     return {
-      priority: 1,
+      priority: JSON.parse(this.user_fields).length+1,
       userFields: JSON.parse(this.user_fields),
       fieldType: JSON.parse(this.fields),
       conditions: JSON.parse(this.user_condition),
@@ -158,6 +158,7 @@ export default {
       selectedType: [],
       submitType: "new",
       submitTitle: 'افزودن فیلد جدید',
+      alias: "",
     };
   },
   watch: {
@@ -260,12 +261,26 @@ export default {
           }
         });
         this.userFields.push(input);
+        this.randomString();
       }
     },
+    randomString() {
+
+      const charSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      var randomString = '';
+      for (var i = 0; i < 10; i++) {
+        var randomPoz = Math.floor(Math.random() * charSet.length);
+        randomString += charSet.substring(randomPoz, randomPoz + 1);
+      }
+
+      console.log(randomString)
+
+      this.alias = "acf_" + randomString;
+    }
   },
   mounted() {
     const vm = this;
-
+    vm.randomString();
     vm.sortFields();
 
     $('tbody').sortable({
